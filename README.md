@@ -31,7 +31,7 @@ This repository provides a production-ready n8n workflow designed to fetch daily
 ---
 
 ### Developed by
-**Camilo Ruas**
+**Camilo Ruas**  
 [Portfolio: camiloruas.dev](https://camiloruas.dev)
 
 ---
@@ -61,5 +61,5 @@ Este repositório contém um fluxo n8n completo para automatizar o envio de lemb
 ---
 
 ### Desenvolvido por
-**Camilo Ruas**
+**Camilo Ruas**  
 [Portfólio: camiloruas.dev](https://camiloruas.dev)
