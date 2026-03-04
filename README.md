@@ -30,6 +30,12 @@ This repository provides a production-ready n8n workflow designed to fetch daily
 
 ---
 
+### Developed by
+**Camilo Ruas**
+[Portfolio: camiloruas.dev](https://camiloruas.dev)
+
+---
+
 ## Português <a name="português"></a>
 
 Este repositório contém um fluxo n8n completo para automatizar o envio de lembretes de aniversário do Google Calendar para o seu WhatsApp através da Evolution API.
@@ -51,3 +57,9 @@ Este repositório contém um fluxo n8n completo para automatizar o envio de lemb
     *   **Nome da Instância**: O nome da sua instância na Evolution API.
     *   **Contato de Destino**: O número de telefone (`remoteJid`) que receberá o aviso.
 4.  **Ativação**: Verifique se a sua Evolution API está respondendo corretamente.
+
+---
+
+### Desenvolvido por
+**Camilo Ruas**
+[Portfólio: camiloruas.dev](https://camiloruas.dev)
