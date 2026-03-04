@@ -1,0 +1,204 @@
+{
+    "name": "Aniversariantes do Google Calendar",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "triggerAtHour": 6
+                        }
+                    ]
+                }
+            },
+            "id": "13834a48-971e-41db-aa0b-12155ac00c66",
+            "name": "Schedule Trigger",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.1,
+            "position": [
+                16,
+                -192
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "getAll",
+                "calendar": {
+                    "__rl": true,
+                    "value": "Insira sua chave aqui",
+                    "mode": "list",
+                    "cachedResultName": "Aniversários"
+                },
+                "returnAll": true,
+                "options": {
+                    "timeMin": "={{ $now.startOf('day').toISO() }}",
+                    "timeMax": "={{ $now.endOf('day').toISO() }}"
+                }
+            },
+            "id": "1c9a0bb7-9863-4afa-929c-3abb90849273",
+            "name": "Google Calendar (V2)",
+            "type": "n8n-nodes-base.googleCalendar",
+            "typeVersion": 1.2,
+            "position": [
+                336,
+                -192
+            ],
+            "credentials": {
+                "googleCalendarOAuth2Api": {
+                    "id": "Insira sua chave aqui",
+                    "name": "Google Calendar account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "version": 2,
+                        "leftValue": "",
+                        "caseSensitive": true,
+                        "typeValidation": "strict"
+                    },
+                    "conditions": [
+                        {
+                            "id": "cond-1",
+                            "leftValue": "={{ $json.aniversariantes }}",
+                            "operator": {
+                                "type": "string",
+                                "operation": "empty",
+                                "singleValue": true
+                            },
+                            "rightValue": ""
+                        }
+                    ],
+                    "combinator": "and"
+                },
+                "options": {}
+            },
+            "id": "if-aniversariantes-id",
+            "name": "Existem Aniversariantes?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2.2,
+            "position": [
+                784,
+                -192
+            ]
+        },
+        {
+            "parameters": {
+                "jsCode": "const allItems = $input.all();\nconst aniversariantes = allItems\n  .filter(item => item.json.summary && item.json.start?.date)\n  .map(item => item.json.summary.replace(/Aniversário de |Aniversário |Aniversario de |Aniversario /gi, ''))\n  .join('\\n');\n\nreturn [{ json: { aniversariantes } }];"
+            },
+            "id": "node-code-agregador-id",
+            "name": "Agrupar Aniversariantes",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                560,
+                -192
+            ]
+        },
+        {
+            "parameters": {},
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [
+                1024,
+                -320
+            ],
+            "id": "39f20fb1-3608-4c06-a59e-344a018e278f",
+            "name": "No Operation, do nothing"
+        },
+        {
+            "parameters": {
+                "resource": "messages-api",
+                "instanceName": "Insira sua chave aqui",
+                "remoteJid": "Insira sua chave aqui",
+                "messageText": "=Olá! Passando para lembrar que hoje o dia é todo especial para:\n\n  *{{ $json.aniversariantes }}*\n\nQue tal enviar aquele abraço e os parabéns? ",
+                "options_message": {}
+            },
+            "id": "f9f2e6e3-3587-4438-b8a9-348f5d926696",
+            "name": "Evolution API Out",
+            "type": "n8n-nodes-evolution-api.evolutionApi",
+            "typeVersion": 1,
+            "position": [
+                1024,
+                -112
+            ],
+            "credentials": {
+                "evolutionApi": {
+                    "id": "Insira sua chave aqui",
+                    "name": "Evolution account"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "Schedule Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Google Calendar (V2)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Google Calendar (V2)": {
+            "main": [
+                [
+                    {
+                        "node": "Agrupar Aniversariantes",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Agrupar Aniversariantes": {
+            "main": [
+                [
+                    {
+                        "node": "Existem Aniversariantes?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Existem Aniversariantes?": {
+            "main": [
+                [
+                    {
+                        "node": "No Operation, do nothing",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Evolution API Out",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    ],
+    "active": true,
+    "settings": {
+        "executionOrder": "v1",
+        "availableInMCP": false,
+        "callerPolicy": "workflowsFromSameOwner",
+        "timeSavedMode": "fixed",
+        "binaryMode": "separate"
+    },
+    "versionId": "Insira sua chave aqui",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "Insira sua chave aqui"
+    },
+    "id": "Insira sua chave aqui",
+    "tags": []
+}
